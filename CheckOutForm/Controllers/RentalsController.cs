@@ -244,14 +244,14 @@ namespace CheckOutForm.Controllers
         }
         public void DumpTableToFile()
         {
-            SqlConnection sqlCon = new SqlConnection("Server = phosphorus\\USAVDB; Database = DeviceRentals; Trusted_Connection = True; MultipleActiveResultSets = true");
+            SqlConnection sqlCon = new SqlConnection("Server = SqlServer\\SQLDBInstanceName; Database = SQLDB_Name; Trusted_Connection = True; MultipleActiveResultSets = true");
             sqlCon.Open();
 
             SqlCommand sqlCmd = new SqlCommand(
-                "DECLARE @current_year DATE = GETDATE() USE DeviceRentals; SELECT * FROM dbo.Rentals WHERE Year(BeginRental) >= Year(@current_year)", sqlCon);
+                "DECLARE @current_year DATE = GETDATE() USE SQLDB_Name; SELECT * FROM dbo.TableName WHERE Year(BeginRental) >= Year(@current_year)", sqlCon);
             SqlDataReader reader = sqlCmd.ExecuteReader();
 
-            string fileName = "USAV_Rental_Report.csv";
+            string fileName = "Rental_Report.csv";
             StreamWriter sw = new StreamWriter(fileName);
             object[] output = new object[reader.FieldCount];
 
