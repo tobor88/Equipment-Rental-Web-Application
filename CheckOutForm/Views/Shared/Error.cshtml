@@ -1,0 +1,18 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        An error occured while processing your request. If you feel you have reached this page in error please submit a ticket by emailing help@usav.org. <br />
+        If you have just tried submitting your form and have reached this page, make sure you entered your email correctly.<br />
+        THank you!<br />
+        - USA Volleyball IT Department
+    </p>
+}
+

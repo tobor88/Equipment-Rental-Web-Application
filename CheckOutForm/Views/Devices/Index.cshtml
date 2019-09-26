@@ -1,0 +1,280 @@
+﻿@model PaginatedList<CheckOutForm.Models.Devices>
+
+@{
+    ViewData["Title"] = "Devices";
+}
+
+<h1>Devices</h1>
+<div id="SummaryLink" class="btn btn-outline-dark" method="get" style="float:right">
+    <a asp-controller="Devices" asp-action="Summary">Device Summary</a>
+</div>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <img src="~/images/Search.png" /><input type="submit" value="Search" class="btn btn-dark" />
+            <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+            <a asp-action="Index">Back to Full List</a>
+            <br />
+            <hr />
+            <b>Red text means a device has been retired. Retired devices have a value of "True" in the "Retired" column. Green means a device is a Loaner. Loaner devices have an Assignee value of "Loaner"</b>
+        </p>
+        <hr />
+    </div>
+</form>
+<div>
+    <table class="table-responsive table-striped" border="1" cellspacing="8" title="USA Volleyball CYOD's" cellpadding="8">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DeviceTypeSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Device Type</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameTagSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Asset Tag</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["AssigneeSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Assignee</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DomainSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Domain</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Entry Date</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["BrandSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Brand</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["ModelSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Model</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["SerialSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Serial#</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["OSSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">OS</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["CPUSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">CPU</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["CPUSpeedSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">CPU Speed</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["RAMSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">RAM</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["HDSizeSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">HD Size</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["HDTypeSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">HD Type</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["OpticalSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Disc</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["ScreenSizeSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Screen Size</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["UserSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">User</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["PasswordSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Password</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["RetireSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Retired</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NotesSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Notes</a>
+                </th>
+                <th>
+                    Options
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                string selectedRow = "";
+                if (item.DevicesID == (int?)ViewData["DevicesID"])
+                {
+                    selectedRow = "success";
+                }
+                var wordColor = "";
+                if (item.Retired == "True")
+                {
+                    wordColor = "Crimson";
+                }
+                if (item.Assignee == "Loaner")
+                {
+                    wordColor = "Green";
+                }
+                <tr class="@selectedRow">
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.DeviceType)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.NameTag)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.Assignee)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.Domain)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.EntryDate)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.Brand)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.Model)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.Serial)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.OS)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.CPU)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.ProcessorSpeed)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.RAM)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.DriveSize)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.HardDriveType)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.Optical)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.ScreenSize)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.User)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.Pwd)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.Retired)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@wordColor">
+                            @Html.DisplayFor(modelItem => item.Notes)
+                        </font>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.DevicesID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.DevicesID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.DevicesID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<div style="float:right">
+    <br />
+    <p><strong>Page @(Model.PageIndex) of @(Model.TotalPages)</strong></p>
+    <p><strong>@(Model.Count) Devices Displayed</strong></p>
+</div>
+<p>
+    <div>
+        <hr />
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@((Model.PageIndex - Model.PageIndex) + 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-dark @prevDisabled">
+            First Page
+        </a>
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex - 2)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-dark @prevDisabled">
+            <<
+        </a>
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-dark @prevDisabled">
+            Previous
+        </a>
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-dark @nextDisabled">
+            Next
+        </a>
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex + 2)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-dark @nextDisabled">
+            >>
+        </a>
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex + (Model.TotalPages - Model.PageIndex))"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-dark @nextDisabled">
+            Last Page
+        </a>
+    </div>
+</p>

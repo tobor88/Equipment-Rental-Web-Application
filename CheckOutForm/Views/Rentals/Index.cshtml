@@ -1,0 +1,197 @@
+﻿@model PaginatedList<CheckOutForm.Models.Rentals>
+
+@{
+    ViewData["Title"] = "Rentals";
+}
+
+<h1>Rentals</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div id="ExportTable" class="btn btn-outline-dark" method="get" style="float:right">
+    <a asp-controller="Rentals" asp-action="DumpTableToFile">Export Current Years Rental Table</a>
+</div>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <img src="~/images/Search.png" /><input type="submit" value="Search" class="btn btn-dark" />
+            <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+<hr />
+
+<div id="table">
+    <table class="table table-responsive table-striped" border="1" cellspacing="8" title="OsbornePro Rental History" cellpadding="8" style="float:left">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["RenterNameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Renter's Name</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["BeginDateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Begin Rental</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["EndDateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">End Rental</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["ApprovedBySortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Approved By</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["InfoSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Notes</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DeviceSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Device</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["StatusSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Current Status</a>
+                </th>
+                <th>
+                    Options
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var bold = "";
+                var statusColor = "";
+
+                if (item.CurrentStatusID == 1)
+                {
+                    statusColor = "Green";
+                    bold = "font-weight:bold";
+                }
+                if (item.CurrentStatusID == 2)
+                {
+                    statusColor = "Crimson";
+                    bold = "font-weight:bold";
+                }
+                if (item.CurrentStatusID == 3)
+                {
+                    statusColor = "Orange";
+                    bold = "font-weight:bold";
+                }
+                if (item.CurrentStatusID == 4)
+                {
+                    statusColor = "Red";
+                    bold = "font-weight:bold";
+                }
+                if (item.CurrentStatusID == 5)
+                {
+                    statusColor = "Blue";
+                    bold = "font-weight:bold";
+                }
+                if (item.CurrentStatusID == 8)
+                {
+                    statusColor = "Purple";
+                    bold = "font-weight:bold";
+                }
+                <tr>
+                    <td>
+                        <font color="@statusColor" style="@bold">
+                            @Html.DisplayFor(modelItem => item.RenterName)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@statusColor" style="@bold">
+                            @Html.DisplayFor(modelItem => item.BeginRental)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@statusColor" style="@bold">
+                            @Html.DisplayFor(modelItem => item.EndRental)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@statusColor" style="@bold">
+                            @Html.DisplayFor(modelItem => item.ApprovedBy)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@statusColor" style="@bold">
+                            @Html.DisplayFor(modelItem => item.Info)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@statusColor" style="@bold">
+                            @Html.DisplayFor(modelItem => item.Devices.NameTag)
+                        </font>
+                    </td>
+                    <td>
+                        <font color="@statusColor" style="@bold">
+                            @Html.DisplayFor(modelItem => item.CurrentStatus.ApprovalStatus)
+                        </font>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.RentalsID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.RentalsID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.RentalsID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <p>Be sure to include the reason for request in the 'Notes' column. This helps Human Resources document why an hourly employee was given a laptop to take home for work purposes.</p>
+</div>
+<div style="float:right">
+    <p><strong>Page @(Model.PageIndex) of @(Model.TotalPages)</strong></p>
+    <p><strong>@(Model.Count) Rentals Displayed</strong></p>
+</div>
+<div>
+    <hr />
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@((Model.PageIndex - Model.PageIndex) + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-dark @prevDisabled">
+        First Page
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex - 2)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-dark @prevDisabled">
+        <<
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-dark @prevDisabled">
+        Previous
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-dark @nextDisabled">
+        Next
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex + 2)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-dark @nextDisabled">
+        >>
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex + (Model.TotalPages - Model.PageIndex))"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-dark @nextDisabled">
+        Last Page
+    </a>
+</div>

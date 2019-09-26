@@ -1,0 +1,174 @@
+﻿@model CheckOutForm.Models.CheckoutFormModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Check Out Form";
+}
+<div class="row">
+    <div class="col-md-12">
+        <h3>Check Out Form</h3><br />
+    </div>
+</div>
+
+<hr />
+<form class="form form-horizontal" method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label asp-for="Name" class="col-md-3 right"><b>Name: </b></label>
+                <div class="col-md-6">
+                    <input asp-for="Name" class="form-control" placeholder="Full Name" />
+                    <span asp-validation-for="Name"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label asp-for="Email" class="col-md-3 right"><b>Email: </b></label>
+                <div class="col-md-6">
+                    <input asp-for="Email" class="form-control" type="email" placeholder="first.last@usav.org" />
+                    <span asp-validation-for="Email"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label asp-for="Manager" class="col-md-3 right"><b>Manager's Email: </b></label>
+                <div class="col-md-6">
+                    <input asp-for="Manager" class="form-control" type="email" placeholder="manager.email@usav.org" />
+                    <span asp-validation-for="Manager"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="DateRange" class="col-md-3 control-label" type="date"><b>Date Range</b> (30 Day Limit):</label>
+        <div class="col-sm-4">
+            <div class="input-daterange" id="datepicker">
+                <div class="input-group">
+                    <input enabled type="text" asp-for="DateStart" id="DateStart" class="input-small form-control" />
+                    <span class="input-group-addon"> <b>To</b></span>
+                    <input enabled type="text" asp-for="DateEnd" id="DateEnd" class="form-control" />
+                </div>
+
+                <!-- Sets max date selection range -->
+                <script src="~/js/site.js" asp-append-version="true"></script>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="col-md-3 right"><b>Laptop Screen Size: </b></label>
+                <div class="col-md-6">
+                    <select asp-for="Sizes" class="form-control">
+                        <option value="0">NA</option>
+                        <option value="13">13inch Laptop Screen</option>
+                        <option value="15">15inch Laptop Screen</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label asp-for="HotSpots" class="col-md-3 right" type="number"><b>HotSpots Needed: </b></label>
+                <div class="col-md-2">
+                    <input asp-for="HotSpots" class="form-control" placeholder="0" type="number" />
+                    <span asp-validation-for="HotSpots"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="col-md-3 right"><b>Projectors: </b><br />(20 Lumens per square foot)</label>
+                <div class="col-md-6">
+                    <select asp-for="Projectors" class="form-control">
+                        <option value="0">NA</option>
+                        <option value="1500">(1500 Lumens)</option>
+                        <option value="1800">(1800 Lumens)</option>
+                        <option value="2200">(2200 Lumens)</option>
+                        <option value="3000">(3000 Lumens)</option>
+                        <option value="6000">Large Meeting Projector (6000 Lumens)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label asp-for="Application" class="col-md-3 right"><b>Required Applications: </b></label>
+                <div class="col-md-6">
+                    <span>-   Office365 Suite:   </span>
+                    <input asp-for="Office365" checked="checked" data-val="true" data-val-required="Office 365 comes as a standard install on our laptops." id="Office365" name="Office365" type="checkbox" value="true" />
+                    <input name="Office365" type="hidden" value="true" />
+
+                    <span>
+                        <br />-   Creative Cloud:
+                    </span>
+                    <input asp-for="CreativeCloud" data-val="true" id="CreativeCloud" name="CreativeCloud" type="checkbox" value="true" />
+                    <input name="CreativeCloud" type="hidden" value="false" />
+
+                    <span>
+                        <br />-   Bitwarden:
+                    </span>
+                    <input asp-for="AES" data-val="true" id="AES" name="AES" type="checkbox" value="true" />
+                    <input name="AES" type="hidden" value="false" />
+
+                    <span>
+                        <br />-   ProtonMail:
+                    </span>
+                    <input asp-for="ProtonMail" data-val="true" id="ProtonMail" name="ProtonMail" type="checkbox" value="true" />
+                    <input name="ProtonMail" type="hidden" value="false" />
+
+                    <span>
+                        <br />-   NordVPN:
+                    </span>
+                    <input asp-for="NordVPN" data-val="true" id="NordVPN" name="NordVPN" type="checkbox" value="true" />
+                    <input name="NordVPN" type="hidden" value="false" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label asp-for="Reasons" class="col-md-3 right"><b>Reason for the Request: </b></label>
+                <div class="col-md-9">
+                    <textarea asp-for="Reasons" rows="3" class="form-control"></textarea>
+                    <span asp-validation-for="Reasons"></span>
+                </div>
+            </div>
+        </div>
+    </div><br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label asp-for="Information" class="col-md-3 right"><b>Anything We Should Know?: </b></label>
+                <div class="col-md-9">
+                    <textarea asp-for="Information" rows="3" class="form-control"></textarea>
+                    <span asp-validation-for="Information"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <p>
+        After clicking 'Submit' you will be redirected to the Laptop Policy. If this does not happen an email address was most likely entered incorrectly.
+        Verify all the information is correct and submit the form again. You will know it went through if you are taken to the Laptop Policy.
+    </p><hr />
+    <div class="row">
+        <div class="col-md-12">
+            <button type="submit"><b>Submit Request</b></button>
+        </div>
+    </div>
+</form>

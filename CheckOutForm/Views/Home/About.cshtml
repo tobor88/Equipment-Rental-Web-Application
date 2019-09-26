@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "About";
+}
+
+<h1>About</h1>
+<h3>Current Version: 2.0</h3>
+<p>
+    <br />
+    The purpose of this web application is to allow users to submit an equipment rental request to HR for approval.
+    The range of dates will vary based on the renter's selection. A limit of 30 days has been set. Requests for longer than 30 days will not be allowed.
+    Any requests that are filled out will be stored in OsbornePro company records. This information will be available to Human Resources and the IT department.<br />
+    If you are going to a OsbornePro event, ensure that the official colors and logos of USA Volleyball are being used. Guidelines for their usage can be found <a href="https://indd.adobe.com/view/973c4f79-a765-401d-abae-edb0add42ebd">HERE</a>.
+    If you have any questions about the guidelines consult the MarCommCreative Team.
+</p>
+<p>
+    Any attempts to visit the non ssl, http version of the site, will redirect the browser to the https location. To ensure encryption is used for data passing over the connection,
+    the http version of this site does not exist.
+    <br /><hr />
+    <h5><b>Authentication</b></h5>
+    After a user with permission to access the device database authenticates their identity, they will be taken a new site extension with the ability to search, view, and edit company device data.
+    Authentication is handled through Azure AD integration. Members in a group defined by IT have the ability to access the full functionality of the web application after signing in.
+    When someone signs in that does not have access to the database they receive an Error Code 500 and they will be denied access.
+    Unauthorized users will not be able to access the database or any of it’s features.
+    <br /><hr />
+    <h5><b>Data Functions</b></h5>
+    The columns in the database table can be organized by ascending or descending order. This is done by clicking the blue link column header.
+    The database may be searched by assignee name, a device’s asset tag, model name, or device type. Other parameters can be added if ever requested.
+    There are presently 10 items displayed per page. This can also be changed if ever requested. The same features are available in the rentals area.
+    Any of the entries can be deleted, edited, or shown in a detailed view. New entries can be added through the database using the web application's GUI.
+    The status field for the rental database pulls from a list of statuses. More options can be added to this status list if ever needed and unused entries can be removed.
+    <br /><hr />
+    <h5><b>Logging</b></h5>
+    Any and all changes are currently logged through the web platform, the operating system, and the cloud. Custom log messages will be added in a future version to further simplify troubleshooting.
+    Error handling has been configured. Please report any errors that do not respond as expected.
+    <br /><hr />
+    <h5><b>Platform Testing</b></h5>
+    Internet Explorer and Edge will not display table outlines. Firefox and Chrome behave as expected.
+    Protection against SQL injections and CSRF have been implemented. Penetration testing has been performed to ensure the security of the application. There are no presently discovered vulnerabilities.
+    <hr />
+</p>
+<p>For questions, comments, suggestions, issues; submit a helpdesk ticket by emailing the<a href="mailto:rosborne@osbornepro.com"> OsbornePro Help Desk</a> </p>
+<hr />
+<address>
+    1 Main St., Ste #200<br />
+    Nutley, NJ 07110<br />
+    <abbr title="Phone">P:</abbr>
+    973.555.5555
+</address>
+<br />
+<address>
+    <strong>Support:</strong> <a href="mailto:help@osbornepro.com">help@osbornepro.com</a><br />
+    <strong>Questions:</strong> <a href="mailto:it@osbornepro.com">it@osbornepro.com</a><br />
+    <strong>Help Desk:</strong><a href="https://helpdesk.osbornepro.com">OsbornePro Help Desk</a>
+</address>

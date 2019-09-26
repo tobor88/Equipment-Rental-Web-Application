@@ -1,0 +1,95 @@
+﻿@model IEnumerable<CheckOutForm.Models.DataGroups.DeviceTypeGroup>
+
+@{
+    ViewData["Title"] = "Summary";
+}
+
+
+<h1>Device Summary</h1>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<div>
+    <table class="table-responsive table-bordered table-striped" cellpadding="8" cellspacing="5" title="Device Counts">
+        <tr>
+            <th>
+                Type of Device
+            </th>
+            <th>
+                Device Count
+            </th>
+            <th>
+                Loaner Devices
+            </th>
+            <th>
+                Retired Devices
+            </th>
+            <th>
+                A Devices
+            </th>
+            <th>
+                A Retired
+            </th>
+            <th>
+                B Devices
+            </th>
+            <th>
+                B Retired
+            </th>
+            <th>
+                C Devices
+            </th>
+            <th>
+                C Retired
+            </th>
+            <th>
+                D Devices
+            </th>
+            <th>
+                D Retired
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeviceTypes)
+                </td>
+                <td>
+                    @item.DeviceTypesCount
+                </td>
+                <td>
+                    @item.AvailableLoaners
+                </td>
+                <td>
+                    @item.RetiredCount
+                </td>
+                <td>
+                    @item.ADevices
+                </td>
+                <td>
+                    @item.ARetired
+                </td>
+                <td>
+                    @item.BDevices
+                </td>
+                <td>
+                    @item.BRetired
+                </td>
+                <td>
+                    @item.CDevices
+                </td>
+                <td>
+                    @item.CRetired
+                </td>
+                <td>
+                    @item.DDevices
+                </td>
+                <td>
+                    @item.DRetired
+                </td>
+            </tr>
+        }
+    </table>
+</div>
