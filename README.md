@@ -10,7 +10,6 @@ ASP.NET Core 3.0 web application that is used for keeping track of who is assign
 ### Install Required Application Packages
 Issue the below commands in Visual Studio 2019 Package Manager Console to install required packages.
 ```powershell
-Add-Package MailKit
 Add-Package BootstrapMVC.Bootstrap4
 Add-Package bootstrap.daterangepicker
 Add-Package  Microsoft.EntityFrameworkCore
@@ -23,7 +22,6 @@ Add-Package Microsoft.Extensions.Logging.Debug
 ```
 If you want to use the dotnet commands you can cd into the second CheckOutForm directory and issue the below commands.
 ```powershell
-dotnet add package MailKit
 dotnet add package BootstrapMVC.Bootstrap4
 dotnet add package bootstrap.daterangepicker
 dotnet add package Microsoft.EntityFrameworkCore
