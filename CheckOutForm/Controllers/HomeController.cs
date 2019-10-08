@@ -1,16 +1,14 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MimeKit;
-using MimeKit.Utils;
 using CheckOutForm.Models;
-using MailKit.Security;
+using System.Net.Mail;
+using System.ComponentModel;
 
 namespace CheckOutForm.Controllers
 {
     [Microsoft.AspNetCore.Authorization.AllowAnonymous]
-    [Microsoft.AspNetCore.Authorization.Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -58,7 +56,7 @@ namespace CheckOutForm.Controllers
                     SmtpClient client1 = new SmtpClient("mail.smtp2go.com", 2525);
                     SmtpClient client2 = new SmtpClient("mail.smtp2go.com", 2525);
 
-                    MailAddress ithr = new MailAddress("laptopform@osbornepro.com", "OsbornePro Form ", System.Text.Encoding.UTF8);
+                    MailAddress ithr = new MailAddress("laptopform@osbornepro.com", "Laptop Form ", System.Text.Encoding.UTF8);
                     MailAddress requester = new MailAddress(e.Email, e.Name, System.Text.Encoding.UTF8);
                     MailAddress manager = new MailAddress(e.Manager, "Manager", System.Text.Encoding.UTF8);
 
@@ -84,9 +82,9 @@ namespace CheckOutForm.Controllers
                 <br>
                             <strong>Applications:  </strong>      <br>
                                <strong> - Office365: </strong>       {e.Office365}     <br>
-                               <strong> - Bitwarden: </strong>             {e.Bitwarden}           <br>
+                               <strong> - Bitwarden: </strong>       {e.Bitwarden}           <br>
                                <strong> - ProtonMail: </strong>      {e.ProtonMail}    <br>
-                               <strong> - NordVPN: </strong>    {e.NordVPN}  <br>
+                               <strong> - NordVPN: </strong>         {e.NordVPN}  <br>
                 <br>
                             <strong>Message:</strong> ""{e.Information}""          <br>
                 <br>
@@ -117,9 +115,9 @@ namespace CheckOutForm.Controllers
                 <br>
                        <strong>Applications: </strong>                        <br>
                               <strong>  - Office365:</strong>      {e.Office365}     <br>
-                               <strong> - Bitwarden:</strong>            {e.Bitwarden}           <br>
+                               <strong> - Bitwarden:</strong>      {e.Bitwarden <br>
                                <strong> - ProtonMail:</strong>     {e.ProtonMail}    <br>
-                               <strong> - NordVPN:</strong>   {e.NordVPN}  <br>
+                               <strong> - NordVPN:</strong>        {e.NordVPN}  <br>
                 <br>
                             <strong>Message:</strong> ""{e.Information}""          <br>
                 <br>
@@ -147,7 +145,7 @@ namespace CheckOutForm.Controllers
                 <p>{e.Name} has submitted a device request form to HR. The details are listed below. <br>
                 If you wish to make any changes please alert HR and IT as well as {e.Name}. <br>
                 If you wish to cancel this request click the Deny Request link at the bottom of this email to autogenerate the email to send. <br>
-                If you click deny and Microsoft's Mail app opens change your default email application to Outlook. This can be done by following the instructions <a href=""https://helpdesk.usav.org/kb/articles/file-does-not-have-an-application-associated-with-it"">HERE</a> or <a href=""https://helpdesk.usav.org/kb/articles/change-default-applicaiton"">HERE</a>
+                If you click deny and Microsoft's Mail app opens change your default email application to Outlook. This can be done by following the instructions <a href=""https://helpdesk.osbornepro.com/articles/file-does-not-have-an-application-associated-with-it"">HERE</a> or <a href=""https://helpdesk.osbornepro.com/articles/change-default-applicaiton"">HERE</a>
 
                 < br>
                             <strong>Name:</strong> {e.Name} <br>
@@ -161,10 +159,10 @@ namespace CheckOutForm.Controllers
                             <strong>Reason for Request:</strong> ""{e.Reasons}""   <br>
                 <br>
                             <strong>Applications:</strong>                       <br>
-                              <strong> - Office365: </strong>     {e.Office365}      <br>
-                              <strong> - Bitwarden: </strong>           {e.Bitwarden}            <br>
-                              <strong> - ProtonMail: </strong>    {e.ProtonMail}     <br>
-                              <strong> - NordVPN: </strong>  {e.NordVPN}   <br>
+                              <strong> - Office365: </strong>       {e.Office365}      <br>
+                              <strong> - Bitwarden: </strong>       {e.Bitwarden <br>
+                              <strong> - ProtonMail: </strong>      {e.ProtonMail}     <br>
+                              <strong> - NordVPN: </strong>         {e.NordVPN}   <br>
                 <br>
                             <strong>Message:</strong> ""{e.Information}""           <br>
                 <br>
@@ -211,7 +209,7 @@ namespace CheckOutForm.Controllers
                     message0.Dispose();
                     message1.Dispose();
                     message2.Dispose();
-                    
+
                     client0.Dispose();
                     client1.Dispose();
                     client2.Dispose();
@@ -220,6 +218,62 @@ namespace CheckOutForm.Controllers
                 } // End try
                 catch (Exception)
                 {
+                    SmtpClient client3 = new SmtpClient("mail.smtp2go.com", 2525);
+                    MailAddress requester = new MailAddress(e.Email, e.Name, System.Text.Encoding.UTF8);
+                    MailAddress it = new MailAddress("it@osbornepro.com", "IT", System.Text.Encoding.UTF8);
+
+                    MailMessage message3 = new MailMessage(it, requester)
+                    {
+                        Body = string.Format($@"<p><strong>IT,</strong></p>
+                        <p>{e.Name} has attempted to submit a laptop rental request. One of the emails has failed to send. This is most likely due to a misspelled email on their part.</p>
+                        <p>The attempted Request details are listed below. If you have received the laptop request and the details below are correct there may have been a temporary disconnect from the SMTP Server. If the manager email is not filled out it will cause this alert.<br>
+                <br>
+                            <strong>Name:</strong> {e.Name} <br>
+                            <strong>Email:</strong> {e.Email}<br>
+                            <strong>Laptop:</strong> {e.Sizes} inch Laptop Screen  <br>
+                            <strong>Projector:</strong> {e.Projectors} Lumens <br>
+                            <strong>HotSpots:</strong> {e.HotSpots} <br>
+                <br>
+                            <strong>Dates:</strong> {e.DateStart} to {e.DateEnd}   <br>
+                <br>
+                            <strong>Reason for Request:</strong> ""{e.Reasons}""   <br>
+                <br>
+                            <strong>Applications:  </strong>      <br>
+                               <strong> - Office365: </strong>  {e.Office365}     <br>
+                               <strong> - Bitwarden: </strong>  {e.Bitwarden}     <br>
+                               <strong> - ProtonMail: </strong> {e.DataVolley}    <br>
+                               <strong> - NordVPN: </strong>    {e.SportzEngine}  <br>
+                <br>
+                            <strong>Message:</strong> ""{e.Information}""          <br>
+                <br>
+
+                        <img src=""cid:{0}""></center>")  // End mailbody
+                    };
+
+
+                    message3.Body += Environment.NewLine;
+                    message3.IsBodyHtml = true;
+                    message3.BodyEncoding = System.Text.Encoding.UTF8;
+                    message3.Subject = "Failed Email Send for Equipment Check Out Request Made";
+                    message3.SubjectEncoding = System.Text.Encoding.UTF8;
+
+                    client3.SendCompleted += new
+                    SendCompletedEventHandler(SendCompletedCallback);
+
+                    string userState3 = "One or more emails failed to send... ";
+                    client3.SendAsync(message3, userState3);
+
+                    Console.WriteLine("Sending email failure alert to IT... press c to cancel mail. Press any other key to exit.");
+                    string answer = Console.ReadLine();
+
+                    if (answer.StartsWith("c") && mailSent == false)
+                    {
+                        client3.SendAsyncCancel();
+                    }
+                    message3.Dispose();
+                    client3.Dispose();
+                    Console.WriteLine("Done.");
+
                     return View("Error");
                 }
             }
