@@ -7,6 +7,8 @@ ASP.NET Core 3.0 web application that is used for keeping track of who is assign
 - Microsoft SQL Server 2017
 - Notepad++ or use sed type commands
 
+Windows Task scheduler should be configured to run the EquipmentRentalAlert.ps1 file once a day. The script is attached to this repository. 
+
 ### Install Required Application Packages
 Issue the below commands in Visual Studio 2019 Package Manager Console to install required packages.
 ```powershell
