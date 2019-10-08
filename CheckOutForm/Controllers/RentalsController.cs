@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using CheckOutForm.Models;
 using Microsoft.Data.SqlClient;
 using System.IO;
+using System.Net.Mail;
+using System.ComponentModel;
 
 namespace CheckOutForm.Controllers
 {
@@ -18,6 +20,30 @@ namespace CheckOutForm.Controllers
         public RentalsController(CheckOutFormContext context)
         {
             _context = context;
+        }
+
+        readonly string UserName = string.Empty;
+
+        static bool mailSent = false;
+
+        private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
+        {
+            // Get the unique identifier for this asynchronous operation.
+            String token = (string)e.UserState;
+
+            if (e.Cancelled)
+            {
+                Console.WriteLine("[{0}] Send canceled.", token);
+            }
+            if (e.Error != null)
+            {
+                Console.WriteLine("[{0}] {1}", token, e.Error.ToString());
+            }
+            else
+            {
+                Console.WriteLine("Message sent.");
+            }
+            mailSent = true;
         }
 
         // GET: Rentals
@@ -181,7 +207,7 @@ namespace CheckOutForm.Controllers
         {
             var deviceQuery = from d in _context.Devices
                               where d.Assignee == "Loaner" && d.Retired != "True"
-                              orderby d.DevicesID
+                              orderby d.NameTag
                               select d;
             ViewBag.DevicesID = new SelectList(deviceQuery.AsNoTracking(), "DevicesID", "NameTag", selectedDevice);
         }
@@ -244,14 +270,14 @@ namespace CheckOutForm.Controllers
         }
         public void DumpTableToFile()
         {
-            SqlConnection sqlCon = new SqlConnection("Server = SqlServer\\SQLDBInstanceName; Database = SQLDB_Name; Trusted_Connection = True; MultipleActiveResultSets = true");
+            SqlConnection sqlCon = new SqlConnection("Server = SQLServer\\SQLDbName; Database = DeviceRentals; Trusted_Connection = True; MultipleActiveResultSets = true");
             sqlCon.Open();
 
             SqlCommand sqlCmd = new SqlCommand(
-                "DECLARE @current_year DATE = GETDATE() USE SQLDB_Name; SELECT * FROM dbo.TableName WHERE Year(BeginRental) >= Year(@current_year)", sqlCon);
+                "DECLARE @current_year DATE = GETDATE() USE DeviceRentals; SELECT * FROM dbo.Rentals WHERE Year(BeginRental) >= Year(@current_year)", sqlCon);
             SqlDataReader reader = sqlCmd.ExecuteReader();
 
-            string fileName = "Rental_Report.csv";
+            string fileName = "C:\\Users\\Public\\Documents\\Rental_Report.csv";
             StreamWriter sw = new StreamWriter(fileName);
             object[] output = new object[reader.FieldCount];
 
@@ -270,6 +296,46 @@ namespace CheckOutForm.Controllers
             reader.Close();
             sqlCon.Close();
             sqlCmd.Dispose();
+
+            var userId = User.Identity.Name.ToString().Replace("@osbornepro.com","").Replace('.',' ');
+            var requestUsername = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(userId);
+
+            Attachment rentalHistoryDoc = new Attachment("C:\\Users\\Public\\Documents\\Rental_Report.csv");
+            SmtpClient client4 = new SmtpClient("mail.smtp2go.com", 2525);
+            MailAddress hrandit = new MailAddress("laptopform@osbornepro.com", "Laptop Form", System.Text.Encoding.UTF8);
+
+            MailMessage message4 = new MailMessage(hrandit, hrandit)
+            {
+                Body = string.Format($@"<p><strong>HR & IT,</strong></p>
+                        <p>{requestUsername} has submitted a request to export the years rental history from the OsbornePro Rental history database. A copy has been sent to HR and IT.</p><br>
+                        <p>A copy of the document is located on the server at {fileName.ToString()}</p>
+            
+            ")  // End mailbody
+            };
+            message4.Attachments.Add(rentalHistoryDoc);
+            message4.Body += Environment.NewLine;
+            message4.IsBodyHtml = true;
+            message4.BodyEncoding = System.Text.Encoding.UTF8;
+            message4.Subject = "This Years Laptop Rental History";
+            message4.SubjectEncoding = System.Text.Encoding.UTF8;
+
+            client4.SendCompleted += new
+            SendCompletedEventHandler(SendCompletedCallback);
+
+            string userState4 = "One or more emails failed to send... ";
+            client4.SendAsync(message4, userState4);
+
+            Console.WriteLine("Sending email with document containing this years rental history to HR and IT... press c to cancel mail. Press any other key to exit.");
+            string answer = Console.ReadLine();
+
+            if (answer.StartsWith("c") && mailSent == false)
+            {
+                client4.SendAsyncCancel();
+            }
+            message4.Dispose();
+            client4.Dispose();
+            Console.WriteLine("Done.");
+
             Response.Redirect("Exported");
         }
         // GET: Rentals/Exported
