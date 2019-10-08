@@ -61,7 +61,7 @@ Make these changes in order or unwanted changes will occur.
 9. I use AzureAD for authentication. If you do not want to use Azure for authentication delete the bottom config lines in appsettings.json and the Extensions directory. Also remove the Azure and Authentication packages from CheckOutForm.sln file. 
 10. On the devices page I use the color green to show any devices that can be used as loaners. These devices will show up in the dropdown menu when creating a new Rental Database entry. Red is for retired devices. These colors are set in the /Views/Devices/Index.cshtml file.
 11. I use colors in the Rentals table as well. Feel free to define these as whatever you want in the Views/Rentals/Index.cshtml file
-
+12. Create a distribution group in your environemt called laptopform@yourdomain.com. This is used to send emails to all the required HR and IT parties. It will make your life easier than to rename the group and make the changes wherever appropriate.
 
 ### Summary
     The purpose of this web application is to allow users to submit an equipment rental request for approval.
